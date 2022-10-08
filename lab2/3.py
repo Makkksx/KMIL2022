@@ -3,6 +3,13 @@ import cv2 as cv
 import argparse
 
 
+def detectImg(img, name):
+    faces = haarcascade.detectMultiScale(img, 1.1, 9)
+    for (x, y, w, h) in faces:
+        cv.rectangle(img, (x, y), (x + w, y + h), (255, 255, 255), 2)
+    cv.imwrite('detect' + name, img)
+
+
 def detectAndDisplay(frame):
     frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     frame_gray = cv.equalizeHist(frame_gray)
@@ -21,6 +28,15 @@ def detectAndDisplay(frame):
     cv.imshow('Capture - Face detection', frame)
 
 
+# 1
+haarcascade = cv.CascadeClassifier(
+    'C:\\Users\\mvolo\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\cv2\\data\haarcascade_frontalface_default.xml')
+imgs = ['11.jpg', '12.jpg', '14.jpg', '15.png', '16.png']
+
+for i in imgs:
+    detectImg(cv.imread(i, 0), i)
+
+# 2
 parser = argparse.ArgumentParser(description='Code for Cascade Classifier tutorial.')
 parser.add_argument('--face_cascade', help='Path to face cascade.',
                     default='C:\\Users\\mvolo\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\cv2\\data\haarcascade_frontalface_alt.xml')
